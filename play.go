@@ -19,6 +19,8 @@
 
 package main
 
+import "fmt"
+
 var gameBoard Board = C4Board{turn: Black}
 
 // Find the user's next move
@@ -30,4 +32,8 @@ func getPlayerMove() Move {
 // Main game loop
 func main() {
 	// YOUR CODE HERE
+	//for {
+	fmt.Printf("%s", gameBoard.String())
+	//}
+
 }

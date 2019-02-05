@@ -7,13 +7,16 @@ package main
 
 import "fmt"
 
-// Represents the key to a transition from one position
+// Segment represents an array of moves of length segmentLength
+type Segment [segmentLength]Move
+
+// Move represents the key to a transition from one position
 // to another position
 // In Connect 4 this is which column is selected
 // to drop a piece
 type Move uint
 
-// Represents a player's piece and also turns.
+// Piece represents a player's piece and also turns.
 type Piece uint
 
 const Black Piece = 1

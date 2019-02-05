@@ -54,7 +54,7 @@ func (board C4Board) MakeMove(col Move) Board {
 // All of the current legal moves.
 // Remember, a move is just the column you can play.
 func (board C4Board) LegalMoves() []Move {
-	// YOUR CODE HERE
+
 	legalMoves := make([]Move, 0, 7)
 
 	var i uint
@@ -70,15 +70,32 @@ func (board C4Board) LegalMoves() []Move {
 // Is it a win?
 func (board C4Board) IsWin() bool {
 	// YOUR CODE HERE
+	var i, j uint
+	for i = 0; i < numCols; i++ {
+		for j = 0; j < numRows; j++ {
+			// if Check Horizontal || Check Vertical || Check Diagonal
+			// 		return true
+		}
+	}
+	return false
 
-	return true
+	// We theoretically don't even need to have two iterations there as isWin() and
+	// isDraw() doesn't check what segment wins, just if there is a win, so we don't need
+	// to go from a specific point.
 }
 
 // Is it a draw?
 func (board C4Board) IsDraw() bool {
 	// YOUR CODE HERE
+	// if LegalMoves() is empty
+	//		return true
 	//
+	var i, j uint
+	for i = 0; i < numCols; i++ {
+		for j = 0; j < numRows; j++ {
 
+		}
+	}
 	return true
 }
 
