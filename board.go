@@ -52,3 +52,13 @@ type Board interface {
 	Turn() Piece
 	fmt.Stringer
 }
+
+// Return if move is in the given list of Moves or not
+func contains(list []Move, move Move) bool {
+	for _, m := range list {
+		if m == move {
+			return true
+		}
+	}
+	return false
+}
