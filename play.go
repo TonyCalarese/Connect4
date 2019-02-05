@@ -19,13 +19,12 @@
 
 package main
 
-import "fmt"
-
 var gameBoard Board = C4Board{turn: Black}
 
 // Find the user's next move
 func getPlayerMove() Move {
 	// YOUR CODE HERE
+	return 1
 }
 
 // Main game loop

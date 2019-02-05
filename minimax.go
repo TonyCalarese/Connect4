@@ -15,7 +15,7 @@
 */
 // minimax.go for CSI 380 Assignment 3
 // This file contains a working implementation of Minimax
-// You will need to implement the FindBestMove() methods to 
+// You will need to implement the FindBestMove() methods to
 // actually evaluate a position by running MiniMax on each of the legal
 // moves in a starting position and finding the move associated with the best outcome
 package main
@@ -57,12 +57,12 @@ func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) flo
 // This version looks at each legal move from the starting position
 // concurrently (runs minimax on each legal move concurrently)
 func ConcurrentFindBestMove(board Board, depth uint) Move {
-
+	return 1
 }
 
 // Find the best possible move in the current position
 // looking up to depth ahead
 // This is a non-concurrent version that you may want to test first
 func FindBestMove(board Board, depth uint) Move {
-
+	return 1
 }

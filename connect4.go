@@ -21,8 +21,6 @@
 
 package main
 
-import "strings"
-
 // size of the board
 const numCols uint = 7
 const numRows uint = 6
@@ -35,9 +33,9 @@ const segmentLength uint = 4
 // You should not need to add any additional properties to this struct, but
 // you may add additional methods
 type C4Board struct {
-	position [numCols][numRows]Piece  // the grid in Connect 4
-	colCount [numCols]uint // how many pieces are in a given column (or how many are "non-empty")
-	turn     Piece // who's turn it is to play
+	position [numCols][numRows]Piece // the grid in Connect 4
+	colCount [numCols]uint           // how many pieces are in a given column (or how many are "non-empty")
+	turn     Piece                   // who's turn it is to play
 }
 
 // Who's turn is it?
@@ -50,22 +48,38 @@ func (board C4Board) Turn() Piece {
 // Does not check if the column is full (assumes legal move).
 func (board C4Board) MakeMove(col Move) Board {
 	// YOUR CODE HERE
+	return nil
 }
 
 // All of the current legal moves.
 // Remember, a move is just the column you can play.
 func (board C4Board) LegalMoves() []Move {
 	// YOUR CODE HERE
+	legalMoves := make([]Move, 0, 7)
+
+	var i uint
+	for i = 0; i < numCols; i++ {
+		if board.colCount[i] < numRows {
+			legalMoves = append(legalMoves, Move(i))
+		}
+	}
+
+	return legalMoves
 }
 
 // Is it a win?
 func (board C4Board) IsWin() bool {
 	// YOUR CODE HERE
+
+	return true
 }
 
 // Is it a draw?
 func (board C4Board) IsDraw() bool {
 	// YOUR CODE HERE
+	//
+
+	return true
 }
 
 // Who is winning in this position?
@@ -84,6 +98,7 @@ func (board C4Board) IsDraw() bool {
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
 	// YOUR CODE HERE
+	return 0.0
 }
 
 // Nice to print board representation
@@ -91,4 +106,6 @@ func (board C4Board) Evaluate(player Piece) float32 {
 // to the user
 func (board C4Board) String() string {
 	// YOUR CODE HERE
+
+	return ""
 }
