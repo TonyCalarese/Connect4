@@ -21,6 +21,8 @@
 
 package main
 
+import "fmt"
+
 // size of the board
 const numCols uint = 7
 const numRows uint = 6
@@ -70,11 +72,63 @@ func (board C4Board) LegalMoves() []Move {
 // Is it a win?
 func (board C4Board) IsWin() bool {
 	// YOUR CODE HERE
-	var i, j uint
-	for i = 0; i < numCols; i++ {
-		for j = 0; j < numRows; j++ {
-			// if Check Horizontal || Check Vertical || Check Diagonal
-			// 		return true
+
+	/*
+		Board:
+		|_|_|_|_|_|_|_|
+		|_|_|_|_|_|_|_|
+		|_|_|_|_|_|_|_|
+		|_|_|_|_|_|_|_|
+		|_|_|_|_|_|_|_|
+		|_|_|_|_|_|_|_|
+
+
+		|(0,5)|(1,5)|(2,5)|(3,5)|(4,5)|(5,5)|(6,5)|
+		|(0,4)|(1,4)|(2,4)|(3,4)|(4,4)|(5,4)|(6,4)|
+		|(0,3)|(1,3)|(2,3)|(3,3)|(4,3)|(5,3)|(6,3)|
+		|(0,2)|(1,2)|(2,2)|(3,2)|(4,2)|(5,2)|(6,2)|
+		|(0,1)|(1,1)|(2,1)|(3,1)|(4,1)|(5,1)|(6,1)|
+		|(0,0)|(1,0)|(2,0)|(3,0)|(4,0)|(5,0)|(6,0)|
+
+	*/
+	var x, y uint
+	var i uint = 1
+	var j uint = 2
+	var n uint = 3
+	// if Check Horizontal || Check Vertical || Check Diagonal
+	//Check Horizontal
+	for x = 0; x < numCols-3; x++ {
+		for y = 0; y < numRows; y++ { //we need to subtract 3 from x to not go out of range of the board horizontally
+
+			if board.position[x][y] == board.position[x+i][y] && board.position[x+j][y] == board.position[x+n][y] {
+				return true
+			}
+		}
+	}
+	//Check Verticle
+	for x = 0; x < numCols; x++ {
+		for y = 0; x < numRows-3; y++ { //we need to subtract 3 from y to not go out of range of the board Vertically
+			if board.position[x][y] == board.position[x][y+i] && board.position[x][y+j] == board.position[x][y+n] {
+				return true
+			}
+		}
+	}
+	//Check Diagnal
+	//left to Right --> upwards
+	for x = 0; x < numCols-3; x++ {
+		for y = 0; y < numRows-2; y++ { //we need to subtract 4 from x to not go out of range of the board horizontally
+
+			if board.position[x][y] == board.position[x+i][y+i] && board.position[x+j][y+j] == board.position[x+n][y+n] {
+				return true
+			}
+		}
+	}
+	//left to Right --> downwards
+	for x = 0; x < numCols-2; x++ {
+		for y = 0; x < numRows-3; y++ { //we need to subtract 4 from y to not go out of range of the board Vertically
+			if board.position[x][y] == board.position[x-i][y-i] && board.position[x-j][y-j] == board.position[x-n][y-n] {
+				return true
+			}
 		}
 	}
 	return false
@@ -90,13 +144,8 @@ func (board C4Board) IsDraw() bool {
 	// if LegalMoves() is empty
 	//		return true
 	//
-	var i, j uint
-	for i = 0; i < numCols; i++ {
-		for j = 0; j < numRows; j++ {
-
-		}
-	}
-	return true
+	fmt.Print("BUFFER")
+	return false
 }
 
 // Who is winning in this position?
@@ -123,6 +172,6 @@ func (board C4Board) Evaluate(player Piece) float32 {
 // to the user
 func (board C4Board) String() string {
 	// YOUR CODE HERE
-
-	return ""
+	var prompt string = "Enter a Column you would like to insert in: "
+	return prompt
 }
