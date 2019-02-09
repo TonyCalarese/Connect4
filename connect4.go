@@ -21,8 +21,6 @@
 
 package main
 
-import "fmt"
-
 // size of the board
 const numCols uint = 7
 const numRows uint = 6
@@ -72,10 +70,8 @@ func (board C4Board) LegalMoves() []Move {
 	return legalMoves
 }
 
-// Is it a win?
+// IsWin calculates if the board is in a winning position
 func (board C4Board) IsWin() bool {
-	// YOUR CODE HERE
-
 	/*
 		Board:
 		|_|_|_|_|_|_|_|
@@ -94,93 +90,14 @@ func (board C4Board) IsWin() bool {
 		|(0,0)|(1,0)|(2,0)|(3,0)|(4,0)|(5,0)|(6,0)|
 
 	*/
-	var x, y uint
-	var i uint = 1
-	var j uint = 2
-	var n uint = 3
-	// if Check Horizontal || Check Vertical || Check Diagonal
-	//Check Horizontal
-	//fmt.Println("Checking Horizontal")
-	for x = 0; x < numCols-3; x++ {
-		for y = 0; y < numRows; y++ { //we need to subtract 3 from x to not go out of range of the board horizontally
-			//If first two match ,                                              if last two match ,                     if first matches third then it is 4 in a row
-			if board.position[x][y] == board.position[x+i][y] && board.position[x+j][y] == board.position[x+n][y] && board.position[x][y] == board.position[x+j][y] {
-				/*
-					1st	fmt.Println(board.position[x][y])
-					2nd	fmt.Println(board.position[x+i][y])
-					3rd	fmt.Println(board.position[x+j][y])
-					4th	fmt.Println(board.position[x+n][y])
-				*/
-				fmt.Println("Victory Horizontal")
-				return true
-			}
-			//fmt.Println(x, y)
-		}
-	}
-	//Check Verticle
-	//fmt.Println("Checking Verticles")
-	for x = 0; x < numCols; x++ {
-		for y = 0; y < numRows-4; y++ { //we need to subtract 3 from y to not go out of range of the board Vertically
-			if board.position[x][y] == board.position[x][y+i] && board.position[x][y+j] == board.position[x][y+n] && board.position[x][y] == board.position[x][y+j] {
-				/*
-					1st	fmt.Println(board.position[x][y])
-					2nd	fmt.Println(board.position[x][y+i])
-					3rd	fmt.Println(board.position[x][y+j])
-					4th	fmt.Println(board.position[x][y+n])
-				*/
+	_, horizontalWin := board.CheckHorizontal()
+	_, verticalWin := board.CheckVertical()
+	_, diagonalWin := board.CheckDiagonal()
 
-				fmt.Println("Victory Verticle")
-				return true
-			}
-			//fmt.Println(x, y)
-		}
-	}
-	//Check Diagnal
-	//left to Right --> upwards
-	//fmt.Println("Checking Diagnally Upwards")
-	for x = 0; x < numCols-3; x++ {
-		for y = 0; y < numRows-3; y++ { //we need to subtract 4 from x to not go out of range of the board horizontally
-			fmt.Println("X: ", x, " Y: ", y)
-			fmt.Println(board.position[x][y], x, y)
-			fmt.Println(board.position[x+i][y+i], x+i, y+i)
-			fmt.Println(board.position[x+j][y+j], x+j, y+j)
-			fmt.Println(board.position[x+n][y+n], x+n, y+n)
-			if board.position[x][y] == board.position[x+i][y+i] && board.position[x+j][y+j] == board.position[x+n][y+n] && board.position[x][y] == board.position[x+j][y+j] {
-				/*
-					1st	fmt.Println(board.position[x][y])
-					2nd	fmt.Println(board.position[x+i][y+i])
-					3rd	fmt.Println(board.position[x+j][y+j])
-					4th	fmt.Println(board.position[x+n][y+n])
-				*/
-				fmt.Println("Victory Diagnal Upwards")
-				return true
-			}
-			//fmt.Println(x, y)
-		}
-	}
-	//left to Right --> downwards
-	//fmt.Println("Checking Diagnally downwards")
-	for x = numCols - 2; x < 3; x-- {
-		for y = numRows - 3; y < 3; y-- { //we need to subtract 4 from y to not go out of range of the board Vertically
-			if board.position[x][y] == board.position[x-i][y-i] && board.position[x-j][y-j] == board.position[x-n][y-n] && board.position[x][y] == board.position[x-j][y-j] {
-				/*
-					1st	fmt.Println(board.position[x][y])
-					2nd	fmt.Println(board.position[x-i][y-i])
-					3rd	fmt.Println(board.position[x-j][y-j])
-					4th	fmt.Println(board.position[x-n][y-n])
-
-				*/
-				fmt.Println("Victory Diagnal Downwards")
-				return true
-			}
-			fmt.Println(x, y)
-		}
+	if horizontalWin || verticalWin || diagonalWin {
+		return true
 	}
 	return false
-
-	// We theoretically don't even need to have two iterations there as isWin() and
-	// isDraw() doesn't check what segment wins, just if there is a win, so we don't need
-	// to go from a specific point.
 }
 
 // Is it a draw?
