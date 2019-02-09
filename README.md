@@ -4,7 +4,7 @@ Starter code for assignment 3
 
 ## Running
 
-Run `go run board.go connect4.go play.go minimax.go` when in the same directory as the source files.
+Run `go run board.go connect4.go play.go minimax.go util.go` when in the same directory as the source files.
 
 ## Testing
 
