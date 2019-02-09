@@ -41,12 +41,12 @@ type C4Board struct {
 	turn     Piece                   // who's turn it is to play
 }
 
-// Who's turn is it?
+// Turn returns who's turn it is.
 func (board C4Board) Turn() Piece {
 	return board.turn
 }
 
-// Put a piece in column col.
+// MakeMove puts a piece in column col.
 // Returns a copy of the board with the move made.
 // Does not check if the column is full (assumes legal move).
 func (board C4Board) MakeMove(col Move) Board {
@@ -54,7 +54,7 @@ func (board C4Board) MakeMove(col Move) Board {
 	return nil
 }
 
-// All of the current legal moves.
+// LegalMoves returns all of the current legal moves.
 // Remember, a move is just the column you can play.
 func (board C4Board) LegalMoves() []Move {
 
@@ -93,7 +93,7 @@ func (board C4Board) IsDraw() bool {
 	return false
 }
 
-// Who is winning in this position?
+// Evaluate returns who is winning in this position?
 // This function scores the position for player
 // and returns a numerical score
 // When player is doing well, the score should be higher
