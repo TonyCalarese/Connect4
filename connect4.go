@@ -74,11 +74,7 @@ func (board C4Board) LegalMoves() []Move {
 // if it is, then returns true, else returns false.
 func (board C4Board) IsWin() bool {
 
-	_, horizontalWin := board.CheckHorizontal()
-	_, verticalWin := board.CheckVertical()
-	_, diagonalWin := board.CheckDiagonal()
-
-	if horizontalWin || verticalWin || diagonalWin {
+	if board.HorizontalWin() || board.VerticalWin() || board.DiagonalWin() {
 		return true
 	}
 	return false
@@ -90,6 +86,10 @@ func (board C4Board) IsDraw() bool {
 	// if LegalMoves() is empty
 	//		return true
 	//
+	if legalMoves := board.LegalMoves(); len(legalMoves) == 0 && !board.IsWin() {
+		return true
+	}
+
 	return false
 }
 

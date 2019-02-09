@@ -42,6 +42,14 @@ func (board C4Board) CheckVertical() (segments []Segment, win bool) {
 	return
 }
 
+// VerticalWin makes checking for winning conditions
+// on the board look cleaner for vertical checking
+func (board C4Board) VerticalWin() bool {
+	_, verticalWin := board.CheckVertical()
+
+	return verticalWin
+}
+
 // CheckHorizontal checks if there is a winning vertical segment
 // it will return immediately if a win is found. If a win is not found
 // it will return all the segments tested and a win status of "false".
@@ -69,6 +77,14 @@ func (board C4Board) CheckHorizontal() (segments []Segment, win bool) {
 	}
 
 	return
+}
+
+// HorizontalWin makes checking for winning conditions
+// on the board look cleaner for horizontal checking
+func (board C4Board) HorizontalWin() bool {
+	_, horizontalWin := board.CheckHorizontal()
+
+	return horizontalWin
 }
 
 // CheckDiagonal checks if there is a winning diagonal segment
@@ -116,4 +132,12 @@ func (board C4Board) CheckDiagonal() (segments []Segment, win bool) {
 	}
 
 	return
+}
+
+// DiagonalWin makes checking for winning conditions
+// on the board look cleaner for diagonal checking
+func (board C4Board) DiagonalWin() bool {
+	_, diagonalWin := board.CheckDiagonal()
+
+	return diagonalWin
 }
