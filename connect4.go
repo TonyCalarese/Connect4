@@ -50,8 +50,25 @@ func (board C4Board) Turn() Piece {
 // Returns a copy of the board with the move made.
 // Does not check if the column is full (assumes legal move).
 func (board C4Board) MakeMove(col Move) Board {
-	// YOUR CODE HERE
-	return nil
+	piece := board.Turn()
+	b := board
+
+	for i, p := range b.position[col] {
+		if p == Empty {
+			b.position[col][i] = piece
+			b.colCount[col]++
+			break
+		}
+	}
+
+	switch piece {
+	case Red:
+		b.turn = Black
+	case Black:
+		b.turn = Red
+	}
+
+	return b
 }
 
 // LegalMoves returns all of the current legal moves.
@@ -80,12 +97,9 @@ func (board C4Board) IsWin() bool {
 	return false
 }
 
-// Is it a draw?
+// IsDraw determines if the board is currently in a draw state
 func (board C4Board) IsDraw() bool {
-	// YOUR CODE HERE
-	// if LegalMoves() is empty
-	//		return true
-	//
+
 	if legalMoves := board.LegalMoves(); len(legalMoves) == 0 && !board.IsWin() {
 		return true
 	}
@@ -93,7 +107,7 @@ func (board C4Board) IsDraw() bool {
 	return false
 }
 
-// Evaluate returns who is winning in this position?
+// Evaluate returns the value of the piece's board
 // This function scores the position for player
 // and returns a numerical score
 // When player is doing well, the score should be higher
@@ -117,6 +131,17 @@ func (board C4Board) Evaluate(player Piece) float32 {
 // to the user
 func (board C4Board) String() string {
 	// YOUR CODE HERE
-	var prompt string = "Enter a Column you would like to insert in: "
+	b := ""
+
+	var j uint
+	for i := int(numRows) - 1; i >= 0; i-- {
+		b += "|"
+		for j = 0; j < numCols; j++ {
+			b += board.position[j][i].String() + "|"
+		}
+		b += "\n"
+	}
+
+	prompt := b + "Enter a Column you would like to insert in: "
 	return prompt
 }

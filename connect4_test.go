@@ -250,6 +250,35 @@ func TestWin5(t *testing.T) {
 	}
 }
 
+func TestMove1(t *testing.T) {
+	b := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 2, 2, 0, 0, 0},
+		[6]Piece{1, 1, 1, 0, 0, 0},
+		[6]Piece{1, 0, 0, 0, 0, 0},
+		[6]Piece{2, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0}},
+		colCount: [7]uint{3, 3, 1, 1, 0, 0, 0},
+		turn:     Black}
+
+	expected := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 2, 2, 0, 0, 0},
+		[6]Piece{1, 1, 1, 1, 0, 0},
+		[6]Piece{1, 0, 0, 0, 0, 0},
+		[6]Piece{2, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0}},
+		colCount: [7]uint{3, 4, 1, 1, 0, 0, 0},
+		turn:     Red}
+
+	actual := b.MakeMove(1)
+	if expected != actual {
+		t.Errorf("Test failed: expected\n%v to be\n%v", actual, expected)
+	}
+}
+
 // Test Concurrent Find Best Move
 // stop the win
 func TestConcurrentFindBestMove1(t *testing.T) {
