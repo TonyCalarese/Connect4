@@ -27,10 +27,13 @@ import "fmt"
 const numCols uint = 7
 const numRows uint = 6
 
+// Segment represents an array of moves of length segmentLength
+type Segment [segmentLength]Piece
+
 // size of a winning segment in Connect 4
 const segmentLength uint = 4
 
-// The main struct that should implement the Board interface
+// C4Board is the main struct that should implement the Board interface
 // It maintains the position of a game
 // You should not need to add any additional properties to this struct, but
 // you may add additional methods

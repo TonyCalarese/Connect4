@@ -8,7 +8,9 @@
 
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 // Check if two slices of moves are equivalent
 func checkEquivalent(p1s, p2s []Move) bool {
@@ -52,6 +54,60 @@ func TestLegalMoves2(t *testing.T) {
 	expected := []Move{0, 1, 3, 4, 5, 6}
 	actual := b.LegalMoves()
 	if !checkEquivalent(expected, actual) {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCheckHorizontal1(t *testing.T) {
+	b := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 2, 1, 2, 2, 1},
+		[6]Piece{2, 1, 2, 1, 2, 2},
+		[6]Piece{1, 2, 1, 2, 1, 1},
+		[6]Piece{1, 2, 1, 2, 1, 2},
+		[6]Piece{2, 2, 1, 2, 1, 2},
+		[6]Piece{1, 1, 2, 1, 2, 2},
+		[6]Piece{2, 1, 2, 1, 2, 2}},
+		colCount: [7]uint{6, 6, 6, 6, 6, 6, 6},
+		turn:     Black}
+	expected := true
+	_, actual := b.CheckHorizontal()
+	if expected != actual {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCheckVertical1(t *testing.T) {
+	b := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 1, 2, 1, 2, 1},
+		[6]Piece{2, 1, 2, 1, 2, 2},
+		[6]Piece{1, 2, 1, 2, 1, 1},
+		[6]Piece{1, 2, 1, 2, 1, 2},
+		[6]Piece{2, 2, 1, 2, 1, 2},
+		[6]Piece{1, 1, 2, 1, 2, 1},
+		[6]Piece{2, 1, 2, 2, 2, 2}},
+		colCount: [7]uint{6, 6, 6, 6, 6, 6, 6},
+		turn:     Black}
+	expected := true
+	_, actual := b.CheckVertical()
+	if expected != actual {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCheckDiagonal1(t *testing.T) {
+	b := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 2, 1, 2, 2, 1},
+		[6]Piece{2, 1, 2, 1, 1, 2},
+		[6]Piece{1, 1, 1, 2, 1, 1},
+		[6]Piece{1, 2, 1, 2, 1, 2},
+		[6]Piece{2, 2, 2, 2, 1, 1},
+		[6]Piece{1, 2, 2, 1, 2, 2},
+		[6]Piece{2, 1, 2, 1, 2, 1}},
+		colCount: [7]uint{6, 6, 6, 6, 6, 6, 6},
+		turn:     Black}
+	expected := true
+	_, actual := b.CheckDiagonal()
+	if expected != actual {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
 }

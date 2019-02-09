@@ -7,9 +7,6 @@ package main
 
 import "fmt"
 
-// Segment represents an array of moves of length segmentLength
-type Segment [segmentLength]Move
-
 // Move represents the key to a transition from one position
 // to another position
 // In Connect 4 this is which column is selected
@@ -21,9 +18,10 @@ type Piece uint
 
 const Black Piece = 1
 const Red Piece = 2
+const Empty Piece = 0
 
 func (piece Piece) opposite() Piece {
-	if piece == 0 {
+	if piece == Empty {
 		return piece
 	}
 	return 3 - piece
