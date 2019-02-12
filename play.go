@@ -19,21 +19,34 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var gameBoard Board = C4Board{turn: Black}
 
 // Find the user's next move
+//Source of Reference: https://golang.org/pkg/fmt/#Scanf
+//https://golang.org/src/fmt/scan.go?s=2653:2699#L53
 func getPlayerMove() Move {
 	// YOUR CODE HERE
-	return 1
+	var col Move
+	fmt.Scan(&col)
+
+	//fmt.Scanln(col)
+
+	return col
 }
 
 // Main game loop
 func main() {
 	// YOUR CODE HERE
-	//for {
-	fmt.Printf("%s", gameBoard.String())
-	//}
+	//Only looping this a few times to just get a few inserted for testing purposes
+	for i := 0; i < 2; i++ {
+
+		fmt.Printf("%s", gameBoard.String())
+		fmt.Println(getPlayerMove())
+		gameBoard.MakeMove(getPlayerMove())
+	}
 
 }
