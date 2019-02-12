@@ -21,6 +21,8 @@
 
 package main
 
+import "fmt"
+
 // size of the board
 const numCols uint = 7
 const numRows uint = 6
@@ -52,23 +54,24 @@ func (board C4Board) Turn() Piece {
 func (board C4Board) MakeMove(col Move) Board {
 	piece := board.Turn()
 	b := board
-
+	fmt.Println("Column: ", col) //Here For Troubleshooting
+	//fmt.Println(board.Turn)      // Here for troubleShooting
 	for i, p := range b.position[col] {
 		if p == Empty {
-			b.position[col][i] = piece
-			b.colCount[col]++
+			board.position[col][i] = piece
+			board.colCount[col]++
 			break
 		}
 	}
 
 	switch piece {
 	case Red:
-		b.turn = Black
+		board.turn = Black
 	case Black:
-		b.turn = Red
+		board.turn = Red
 	}
 
-	return b
+	return board
 }
 
 // LegalMoves returns all of the current legal moves.
@@ -142,6 +145,6 @@ func (board C4Board) String() string {
 		b += "\n"
 	}
 
-	prompt := b + "Enter a Column you would like to insert in: "
-	return prompt
+	//prompt := b + "Enter a Column you would like to insert in: "
+	return b
 }

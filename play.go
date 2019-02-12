@@ -31,9 +31,9 @@ var gameBoard Board = C4Board{turn: Black}
 func getPlayerMove() Move {
 	// YOUR CODE HERE
 	var col Move
-	fmt.Scan(&col)
 
-	//fmt.Scanln(col)
+	fmt.Println("Enter a Column you would like to insert in: ")
+	fmt.Scan(&col)
 
 	return col
 }
@@ -43,10 +43,9 @@ func main() {
 	// YOUR CODE HERE
 	//Only looping this a few times to just get a few inserted for testing purposes
 	for i := 0; i < 2; i++ {
-
 		fmt.Printf("%s", gameBoard.String())
-		fmt.Println(getPlayerMove())
-		gameBoard.MakeMove(getPlayerMove())
+		var col Move = getPlayerMove()
+		gameBoard.MakeMove(col)
 	}
-
+	fmt.Printf("%s", gameBoard.String())
 }
