@@ -44,8 +44,8 @@ func main() {
 	//Only looping this a few times to just get a few inserted for testing purposes
 	for i := 0; i < 2; i++ {
 		fmt.Printf("%s", gameBoard.String())
-		var col Move = getPlayerMove()
-		gameBoard.MakeMove(col)
+		col := getPlayerMove()
+		gameBoard = gameBoard.MakeMove(col)
 	}
 	fmt.Printf("%s", gameBoard.String())
 }
