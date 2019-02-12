@@ -279,6 +279,59 @@ func TestMove1(t *testing.T) {
 	}
 }
 
+func TestFindBestMove1(t *testing.T) {
+	b := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 2, 0, 0, 0, 0},
+		[6]Piece{1, 1, 1, 0, 0, 0},
+		[6]Piece{1, 0, 0, 0, 0, 0},
+		[6]Piece{2, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0}},
+		colCount: [7]uint{2, 3, 1, 1, 0, 0, 0},
+		turn:     Red}
+	expected := Move(1)
+	actual := FindBestMove(b, 4)
+	if expected != actual {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestFindBestMove2(t *testing.T) {
+	b := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 2, 0, 0, 0, 0},
+		[6]Piece{1, 1, 0, 0, 0, 0},
+		[6]Piece{1, 1, 0, 0, 0, 0},
+		[6]Piece{2, 2, 1, 0, 0, 0},
+		[6]Piece{2, 1, 2, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0}},
+		colCount: [7]uint{2, 2, 2, 3, 3, 0, 0},
+		turn:     Black}
+	expected := Move(4)
+	actual := FindBestMove(b, 3)
+	if expected != actual {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestFindBestMove3(t *testing.T) {
+	b := C4Board{position: [7][6]Piece{
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{1, 0, 0, 0, 0, 0},
+		[6]Piece{1, 2, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0}},
+		colCount: [7]uint{0, 0, 1, 2, 0, 0, 0},
+		turn:     Red}
+	actual := FindBestMove(b, 5)
+	if (actual != Move(1)) && (actual != Move(4)) { // two save moves
+		t.Errorf("Test failed: expected %v to be 1 or 4", actual)
+	}
+}
+
 // Test Concurrent Find Best Move
 // stop the win
 func TestConcurrentFindBestMove1(t *testing.T) {

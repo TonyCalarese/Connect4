@@ -32,20 +32,41 @@ func getPlayerMove() Move {
 	// YOUR CODE HERE
 	var col Move
 
-	fmt.Println("Enter a Column you would like to insert in: ")
-	fmt.Scan(&col)
-
+	fmt.Println("Enter a Column you would like to insert in(1-7): ")
+	for {
+		if _, err := fmt.Scanln(&col); err == nil && col <= 7 || col >= 1 {
+			break
+		}
+	}
+	col--
 	return col
 }
 
 // Main game loop
 func main() {
-	// YOUR CODE HERE
-	//Only looping this a few times to just get a few inserted for testing purposes
-	for i := 0; i < 2; i++ {
+	for !gameBoard.IsDraw() && !gameBoard.IsWin() {
 		fmt.Printf("%s", gameBoard.String())
+
+		legal := false
 		col := getPlayerMove()
+		for legal == false {
+			legalMoves := gameBoard.LegalMoves()
+			for _, move := range legalMoves {
+				if col == move {
+					legal = true
+					break
+				}
+			}
+			if legal == false {
+				col = getPlayerMove()
+			}
+		}
 		gameBoard = gameBoard.MakeMove(col)
+
+		gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, 3))
+		fmt.Printf("Black: %f", gameBoard.Evaluate(1))
+		fmt.Printf("Red: %f", gameBoard.Evaluate(2))
+		fmt.Println()
 	}
 	fmt.Printf("%s", gameBoard.String())
 }

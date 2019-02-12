@@ -21,8 +21,6 @@
 
 package main
 
-import "fmt"
-
 // size of the board
 const numCols uint = 7
 const numRows uint = 6
@@ -54,8 +52,7 @@ func (board C4Board) Turn() Piece {
 func (board C4Board) MakeMove(col Move) Board {
 	piece := board.Turn()
 	b := board
-	fmt.Println("Column: ", col) //Here For Troubleshooting
-	//fmt.Println(board.Turn)      // Here for troubleShooting
+
 	for i, p := range b.position[col] {
 		if p == Empty {
 			board.position[col][i] = piece
@@ -64,12 +61,7 @@ func (board C4Board) MakeMove(col Move) Board {
 		}
 	}
 
-	switch piece {
-	case Red:
-		board.turn = Black
-	case Black:
-		board.turn = Red
-	}
+	board.turn = board.turn.opposite()
 
 	return board
 }
@@ -125,8 +117,17 @@ func (board C4Board) IsDraw() bool {
 // You may also need to score wins (4 filleds) as very high scores and losses (4 filleds
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
-	// YOUR CODE HERE
-	return 0.0
+	var totalScore float32
+
+	horizontalSegments, _ := board.CheckHorizontal()
+	verticalSegments, _ := board.CheckVertical()
+	diagonalSegments, _ := board.CheckDiagonal()
+
+	totalScore += CalculateDirection(horizontalSegments, player)
+	totalScore += CalculateDirection(verticalSegments, player)
+	totalScore += CalculateDirection(diagonalSegments, player)
+
+	return totalScore
 }
 
 // Nice to print board representation

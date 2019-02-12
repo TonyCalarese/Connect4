@@ -141,3 +141,48 @@ func (board C4Board) DiagonalWin() bool {
 
 	return diagonalWin
 }
+
+// CalculateDirection calculates the score in the direction of segments
+func CalculateDirection(segments []Segment, player Piece) (score float32) {
+
+	for _, segment := range segments {
+		score += calculateScore(segment, player)
+	}
+
+	return
+}
+
+func calculateScore(segment Segment, player Piece) float32 {
+	pieceCount := 0
+	pieceToCount := Empty
+	for _, piece := range segment {
+		if piece != Empty && pieceToCount == Empty {
+			pieceToCount = piece
+			pieceCount++
+		} else if piece != pieceToCount && piece != Empty {
+			return 0.0
+		} else if piece != Empty {
+			pieceCount++
+		}
+	}
+
+	score := func() float32 {
+		if pieceCount == 0 {
+			return 0.0
+		} else if pieceCount == 1 {
+			return 1.0
+		} else if pieceCount == 2 {
+			return 5.0
+		} else if pieceCount == 3 {
+			return 50.0
+		} else {
+			return 5000.0
+		}
+	}
+
+	if pieceToCount != player && pieceToCount != Empty {
+		return -score()
+	}
+
+	return score()
+}

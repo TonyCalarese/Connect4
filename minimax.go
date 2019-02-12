@@ -60,9 +60,19 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 	return 1
 }
 
-// Find the best possible move in the current position
+// FindBestMove finds the best possible move in the current position
 // looking up to depth ahead
 // This is a non-concurrent version that you may want to test first
 func FindBestMove(board Board, depth uint) Move {
-	return 1
+	var bestMove Move
+	var bestScore float32 = -math.MaxFloat32
+
+	for _, move := range board.LegalMoves() {
+		if score := MiniMax(board.MakeMove(move), true, board.Turn().opposite(), depth); score > bestScore {
+			bestMove = move
+			bestScore = score
+		}
+	}
+
+	return bestMove
 }
