@@ -40,7 +40,7 @@ func (piece Piece) String() string {
 	}
 }
 
-// A generic interface that could represent a board (read position)
+// Board is a generic interface that could represent a board (read position)
 // in many different board games that you will implicitly
 // need to implement in your connect 4 game in the struct C4Board
 // Minimax depends on this interface

@@ -22,7 +22,7 @@ package main
 
 import "math"
 
-// Find the best possible outcome evaluation for originalPlayer
+// Minimax finds the best possible outcome evaluation for originalPlayer
 // depth is initially the maximum depth
 func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) float32 {
 	// Base case — terminal position or maximum depth reached
@@ -68,7 +68,7 @@ func FindBestMove(board Board, depth uint) Move {
 	var bestScore float32 = -math.MaxFloat32
 
 	for _, move := range board.LegalMoves() {
-		if score := MiniMax(board.MakeMove(move), true, board.Turn().opposite(), depth); score > bestScore {
+		if score := MiniMax(board.MakeMove(move), true, board.Turn(), depth); score > bestScore {
 			bestMove = move
 			bestScore = score
 		}

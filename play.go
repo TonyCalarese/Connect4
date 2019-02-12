@@ -29,12 +29,11 @@ var gameBoard Board = C4Board{turn: Black}
 //Source of Reference: https://golang.org/pkg/fmt/#Scanf
 //https://golang.org/src/fmt/scan.go?s=2653:2699#L53
 func getPlayerMove() Move {
-	// YOUR CODE HERE
 	var col Move
 
 	fmt.Println("Enter a Column you would like to insert in(1-7): ")
 	for {
-		if _, err := fmt.Scanln(&col); err == nil && col <= 7 || col >= 1 {
+		if _, err := fmt.Scanln(&col); err == nil && (col <= 7 || col >= 1) {
 			break
 		}
 	}
@@ -62,10 +61,9 @@ func main() {
 			}
 		}
 		gameBoard = gameBoard.MakeMove(col)
-
 		gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, 3))
-		fmt.Printf("Black: %f", gameBoard.Evaluate(1))
-		fmt.Printf("Red: %f", gameBoard.Evaluate(2))
+		fmt.Printf("Black: %f", gameBoard.Evaluate(Black))
+		fmt.Printf("Red: %f", gameBoard.Evaluate(Red))
 		fmt.Println()
 	}
 	fmt.Printf("%s", gameBoard.String())

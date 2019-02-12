@@ -50,20 +50,20 @@ func (board C4Board) Turn() Piece {
 // Returns a copy of the board with the move made.
 // Does not check if the column is full (assumes legal move).
 func (board C4Board) MakeMove(col Move) Board {
-	piece := board.Turn()
 	b := board
+	piece := b.Turn()
 
 	for i, p := range b.position[col] {
 		if p == Empty {
-			board.position[col][i] = piece
-			board.colCount[col]++
+			b.position[col][i] = piece
+			b.colCount[col]++
 			break
 		}
 	}
 
-	board.turn = board.turn.opposite()
+	b.turn = b.turn.opposite()
 
-	return board
+	return b
 }
 
 // LegalMoves returns all of the current legal moves.
@@ -134,7 +134,6 @@ func (board C4Board) Evaluate(player Piece) float32 {
 // This will be used in play.go to print out the state of the position
 // to the user
 func (board C4Board) String() string {
-	// YOUR CODE HERE
 	b := ""
 
 	var j uint
