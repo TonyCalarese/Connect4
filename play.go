@@ -41,9 +41,27 @@ func getPlayerMove() Move {
 	return col
 }
 
+func getDepth() uint {
+	var depth uint
+
+	fmt.Println("Enter a difficulty (1-5): ")
+	for {
+		if _, err := fmt.Scanln(&depth);
+		 err == nil && (depth <= 5 || depth >= 1) {
+			break
+		}
+	}
+	return depth
+}
 // Main game loop
 func main() {
 	//var c chan Move = make(chan Move)
+
+
+	//Set difficulty
+	var depth uint = getDepth()
+
+	
 	for !gameBoard.IsDraw() && !gameBoard.IsWin() {
 		fmt.Printf("%s", gameBoard.String())
 
@@ -70,7 +88,7 @@ func main() {
 			 fmt.Println("!!!!!!!!!Congradulations You Won!!!!!!!!!!!!!")
 			 break
 		 }
-		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 3))
+		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, depth))
 
 		if gameBoard.IsWin() {
 			//Player has won 
