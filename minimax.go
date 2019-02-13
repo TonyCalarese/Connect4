@@ -22,7 +22,7 @@ package main
 
 import "math"
 
-// Minimax finds the best possible outcome evaluation for originalPlayer
+// MiniMax finds the best possible outcome evaluation for originalPlayer
 // depth is initially the maximum depth
 func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) float32 {
 	// Base case — terminal position or maximum depth reached
@@ -52,8 +52,8 @@ func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) flo
 	}
 }
 
-// Find the best possible move in the current position
-// looking up to depth ahead
+// ConcurrentFindBestMove finds the best possible move in
+// the current position looking up to depth ahead.
 // This version looks at each legal move from the starting position
 // concurrently (runs minimax on each legal move concurrently)
 func ConcurrentFindBestMove(board Board, depth uint) Move {
@@ -68,6 +68,7 @@ func FindBestMove(board Board, depth uint) Move {
 	var bestScore float32 = -math.MaxFloat32
 
 	for _, move := range board.LegalMoves() {
+		// Should we pass board.Turn() or pass the next turn into this function?
 		if score := MiniMax(board.MakeMove(move), true, board.Turn(), depth); score > bestScore {
 			bestMove = move
 			bestScore = score

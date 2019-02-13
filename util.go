@@ -4,6 +4,9 @@ package main
 // are of the same kind and non empty. Returns true if all pieces
 // in the segment are of the same kind, false otherwise.
 func segmentEquivalent(segment Segment) bool {
+	// basePiece will be set to the first item in the slice,
+	// doesn't matter if the first item is empty, because if it is
+	// then all cannot be equivalent AND have a piece in it.
 	basePiece := segment[0]
 	for _, piece := range segment {
 		if piece != basePiece || piece == Empty {
@@ -21,6 +24,7 @@ func (board C4Board) CheckVertical() (segments []Segment, win bool) {
 	win = false
 	var segment Segment
 
+	// Finds all vertical segments and appends to a slice
 	var i, j uint
 	for i = 0; i < numCols; i++ {
 		for j = 0; j < numRows-3; j++ {
@@ -59,6 +63,7 @@ func (board C4Board) CheckHorizontal() (segments []Segment, win bool) {
 
 	var i, j uint
 
+	// Finds all horizontal segments and appends to a slice
 	for i = 0; i < numRows; i++ {
 		for j = 0; j < numCols-3; j++ {
 			segment = Segment{
@@ -145,6 +150,8 @@ func (board C4Board) DiagonalWin() bool {
 // CalculateDirection calculates the score in the direction of segments
 func CalculateDirection(segments []Segment, player Piece) (score float32) {
 
+	// Goes through every segment in the direction and
+	// calculates the score for that segment
 	for _, segment := range segments {
 		score += calculateScore(segment, player)
 	}
@@ -155,7 +162,10 @@ func CalculateDirection(segments []Segment, player Piece) (score float32) {
 func calculateScore(segment Segment, player Piece) float32 {
 	pieceCount := 0
 	pieceToCount := Empty
+	// Loops through all the pieces in the segment
 	for _, piece := range segment {
+		// We only want to choose a piece to count once
+		// we actually get to a piece that isn't empty
 		if piece != Empty && pieceToCount == Empty {
 			pieceToCount = piece
 			pieceCount++
@@ -166,6 +176,7 @@ func calculateScore(segment Segment, player Piece) float32 {
 		}
 	}
 
+	// Closure to handle score calculating
 	score := func() float32 {
 		if pieceCount == 0 {
 			return 0.0

@@ -53,15 +53,13 @@ func (board C4Board) MakeMove(col Move) Board {
 	b := board
 	piece := b.Turn()
 
-	for i, p := range b.position[col] {
-		if p == Empty {
-			b.position[col][i] = piece
-			b.colCount[col]++
-			break
-		}
-	}
+	// board.colCount[col] will be the empty space in the column
+	// technically this can error however it shouldn't be called if
+	// it isn't a legal move
+	b.position[col][board.colCount[col]] = piece
+	b.colCount[col]++
 
-	b.turn = b.turn.opposite()
+	b.turn = b.Turn().opposite()
 
 	return b
 }
@@ -69,9 +67,10 @@ func (board C4Board) MakeMove(col Move) Board {
 // LegalMoves returns all of the current legal moves.
 // Remember, a move is just the column you can play.
 func (board C4Board) LegalMoves() []Move {
-
+	// Creates a slice with the capacity of the max amount of possible moves
 	legalMoves := make([]Move, 0, 7)
 
+	// Appends a possible move if it isn't full
 	var i uint
 	for i = 0; i < numCols; i++ {
 		if board.colCount[i] < numRows {
@@ -86,6 +85,7 @@ func (board C4Board) LegalMoves() []Move {
 // if it is, then returns true, else returns false.
 func (board C4Board) IsWin() bool {
 
+	// Checks if there is a win in any direction
 	if board.HorizontalWin() || board.VerticalWin() || board.DiagonalWin() {
 		return true
 	}
@@ -95,6 +95,9 @@ func (board C4Board) IsWin() bool {
 // IsDraw determines if the board is currently in a draw state
 func (board C4Board) IsDraw() bool {
 
+	// If there are no legal moves AND it isn't currently a win, then
+	// its a draw. Theoretically, IsDraw is never called before IsWin, therefore
+	// we know the board isn't in a winning state and don't neccesarily need that check.
 	if legalMoves := board.LegalMoves(); len(legalMoves) == 0 && !board.IsWin() {
 		return true
 	}
@@ -119,10 +122,12 @@ func (board C4Board) IsDraw() bool {
 func (board C4Board) Evaluate(player Piece) float32 {
 	var totalScore float32
 
+	// These will load all of the segments for each direction into these three variables
 	horizontalSegments, _ := board.CheckHorizontal()
 	verticalSegments, _ := board.CheckVertical()
 	diagonalSegments, _ := board.CheckDiagonal()
 
+	// Gets the score for all the segments in that direction
 	totalScore += CalculateDirection(horizontalSegments, player)
 	totalScore += CalculateDirection(verticalSegments, player)
 	totalScore += CalculateDirection(diagonalSegments, player)
