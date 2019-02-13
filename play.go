@@ -63,10 +63,26 @@ func main() {
 		}
 		gameBoard = gameBoard.MakeMove(col)
 		//gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, 3))
+
+		 if gameBoard.IsWin() {
+			 //Player has won 
+			 //Need to check the win after every Move
+			 fmt.Println("!!!!!!!!!Congradulations You Won!!!!!!!!!!!!!")
+			 break
+		 }
 		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 3))
+
+		if gameBoard.IsWin() {
+			//Player has won 
+			//Need to check the win after every Move
+			fmt.Println("!!!!!!!!!The Computer Won!!!!!!!!!!!!")
+			break
+		}
+		/*
 		fmt.Printf("Black: %f", gameBoard.Evaluate(Black))
 		fmt.Printf("Red: %f", gameBoard.Evaluate(Red))
 		fmt.Println()
+		*/
 	}
 	fmt.Printf("%s", gameBoard.String())
 }

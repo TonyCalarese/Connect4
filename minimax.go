@@ -21,8 +21,8 @@
 package main
 
 import (
-	"fmt"
 	"math"
+	//"fmt"
 )
 
 // MiniMax finds the best possible outcome evaluation for originalPlayer
@@ -84,7 +84,7 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 
 	for i := 0; i < len(legalMoves); i++ {
 		eval := <-scores
-		fmt.Printf("m: %d, f: %f\n", eval.m, eval.f)
+		//fmt.Printf("m: %d, f: %f\n", eval.m, eval.f)
 		if eval.f > bestScore {
 			bestScore = eval.f
 			bestMove = eval.m
