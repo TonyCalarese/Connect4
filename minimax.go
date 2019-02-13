@@ -20,7 +20,10 @@
 // moves in a starting position and finding the move associated with the best outcome
 package main
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 // MiniMax finds the best possible outcome evaluation for originalPlayer
 // depth is initially the maximum depth
@@ -52,7 +55,8 @@ func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) flo
 	}
 }
 
-type eval struct {
+// Eval represents a move evaluation
+type Eval struct {
 	m Move
 	f float32
 }
@@ -66,24 +70,27 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 	var bestScore float32 = -math.MaxFloat32
 	legalMoves := board.LegalMoves()
 
-	scores := make(chan eval, len(legalMoves))
+	scores := make(chan Eval, len(legalMoves))
 	//evals := make([]eval, len(legalMoves))
 
 	for _, move := range legalMoves {
-		go func(move Move, board Board) {
-			var e eval
+		go func(move Move) {
+			var e Eval
 			e.m = move
 			e.f = MiniMax(board.MakeMove(move), true, board.Turn(), depth)
 			scores <- e
-		}(move, board)
+		}(move)
 	}
-	close(scores)
 
-	for eval := range scores {
+	for i := 0; i < len(legalMoves); i++ {
+		eval := <-scores
+		fmt.Printf("m: %d, f: %f\n", eval.m, eval.f)
 		if eval.f > bestScore {
+			bestScore = eval.f
 			bestMove = eval.m
 		}
 	}
+	close(scores)
 
 	return bestMove
 }
