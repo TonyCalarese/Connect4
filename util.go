@@ -38,7 +38,6 @@ func (board C4Board) CheckVertical() (segments []Segment, win bool) {
 
 			if segmentEquivalent(segment) {
 				win = true
-				return
 			}
 		}
 	}
@@ -76,7 +75,6 @@ func (board C4Board) CheckHorizontal() (segments []Segment, win bool) {
 
 			if segmentEquivalent(segment) {
 				win = true
-				return
 			}
 		}
 	}
@@ -113,7 +111,6 @@ func (board C4Board) CheckDiagonal() (segments []Segment, win bool) {
 
 			if segmentEquivalent(segment) {
 				win = true
-				return
 			}
 		}
 	}
@@ -131,7 +128,6 @@ func (board C4Board) CheckDiagonal() (segments []Segment, win bool) {
 
 			if segmentEquivalent(segment) {
 				win = true
-				return
 			}
 		}
 	}
@@ -153,13 +149,13 @@ func CalculateDirection(segments []Segment, player Piece) (score float32) {
 	// Goes through every segment in the direction and
 	// calculates the score for that segment
 	for _, segment := range segments {
-		score += calculateScore(segment, player)
+		score += CalculateScore(segment, player)
 	}
 
 	return
 }
 
-func calculateScore(segment Segment, player Piece) float32 {
+func CalculateScore(segment Segment, player Piece) float32 {
 	pieceCount := 0
 	pieceToCount := Empty
 	// Loops through all the pieces in the segment
