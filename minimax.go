@@ -52,12 +52,40 @@ func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) flo
 	}
 }
 
+type eval struct {
+	m Move
+	f float32
+}
+
 // ConcurrentFindBestMove finds the best possible move in
 // the current position looking up to depth ahead.
 // This version looks at each legal move from the starting position
 // concurrently (runs minimax on each legal move concurrently)
 func ConcurrentFindBestMove(board Board, depth uint) Move {
-	return 1
+	var bestMove Move
+	var bestScore float32 = -math.MaxFloat32
+	legalMoves := board.LegalMoves()
+
+	scores := make(chan eval, len(legalMoves))
+	//evals := make([]eval, len(legalMoves))
+
+	for _, move := range legalMoves {
+		go func(move Move, board Board) {
+			var e eval
+			e.m = move
+			e.f = MiniMax(board.MakeMove(move), true, board.Turn(), depth)
+			scores <- e
+		}(move, board)
+	}
+	close(scores)
+
+	for eval := range scores {
+		if eval.f > bestScore {
+			bestMove = eval.m
+		}
+	}
+
+	return bestMove
 }
 
 // FindBestMove finds the best possible move in the current position
