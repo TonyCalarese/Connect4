@@ -62,8 +62,8 @@ func main() {
 			}
 		}
 		gameBoard = gameBoard.MakeMove(col)
-		gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, 3))
-		//gameBoard = gameBoard.MakeMove(go ConcurrentFindBestMove(gameBoard, 3))
+		//gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, 3))
+		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 3))
 		fmt.Printf("Black: %f", gameBoard.Evaluate(Black))
 		fmt.Printf("Red: %f", gameBoard.Evaluate(Red))
 		fmt.Println()
