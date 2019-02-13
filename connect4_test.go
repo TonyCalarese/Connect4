@@ -390,3 +390,66 @@ func TestConcurrentFindBestMove3(t *testing.T) {
 		t.Errorf("Test failed: expected %v to be 1 or 4", actual)
 	}
 }
+
+func TestCalculateScore1(t *testing.T) {
+	var s Segment = [4]Piece{Red, Black, Red, Red}
+	var expected float32 = 0.0
+	var actual float32 = CalculateScore(s, Red)
+	if actual != expected {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCalculateScore2(t *testing.T) {
+	var s Segment = [4]Piece{Red, Empty, Red, Red}
+	var expected float32 = 50.0
+	var actual float32 = CalculateScore(s, Red)
+	if actual != expected {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCalculateScore3(t *testing.T) {
+	var s Segment = [4]Piece{Red, Empty, Red, Red}
+	var expected float32 = -50.0
+	var actual float32 = CalculateScore(s, Black)
+	if actual != expected {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCalculateScore4(t *testing.T) {
+	var s Segment = [4]Piece{Empty, Empty, Red, Red}
+	var expected float32 = -5.0
+	var actual float32 = CalculateScore(s, Black)
+	if actual != expected {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCalculateScore5(t *testing.T) {
+	var s Segment = [4]Piece{Red, Empty, Empty, Red}
+	var expected float32 = -5.0
+	var actual float32 = CalculateScore(s, Black)
+	if actual != expected {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCalculateScore6(t *testing.T) {
+	var s Segment = [4]Piece{Black, Red, Red, Red}
+	var expected float32 = 0.0
+	var actual float32 = CalculateScore(s, Black)
+	if actual != expected {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
+
+func TestCalculateScore7(t *testing.T) {
+	var s Segment = [4]Piece{Red, Red, Red, Red}
+	var expected float32 = 5000.0
+	var actual float32 = CalculateScore(s, Red)
+	if actual != expected {
+		t.Errorf("Test failed: expected %v to be %v", actual, expected)
+	}
+}
