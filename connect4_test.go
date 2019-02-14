@@ -9,8 +9,54 @@
 package main
 
 import (
+	"fmt"
+	"sync"
 	"testing"
 )
+
+func TestGetSegments1(t *testing.T) {
+	// Not really a test, i wanted a playground tbh
+	tracker := SegmentTracker{make(map[C4Board][]Segment), &sync.Mutex{}}
+
+	b1 := C4Board{position: [7][6]Piece{
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{1, 2, 1, 2, 1, 2},
+		[6]Piece{1, 2, 0, 0, 0, 0},
+		[6]Piece{1, 2, 1, 2, 1, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0}},
+		colCount: [7]uint{0, 0, 6, 2, 5, 0, 0},
+		turn:     Red}
+
+	s1 := []Segment{{1, 1, 1, 1}}
+
+	b2 := C4Board{position: [7][6]Piece{
+		[6]Piece{2, 2, 2, 0, 0, 0},
+		[6]Piece{1, 1, 1, 0, 0, 0},
+		[6]Piece{1, 0, 0, 0, 0, 0},
+		[6]Piece{2, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0},
+		[6]Piece{0, 0, 0, 0, 0, 0}},
+		colCount: [7]uint{3, 3, 1, 1, 0, 0, 0},
+		turn:     Black}
+
+	s2 := []Segment{{0, 2, 0, 0}}
+
+	tracker.AddBoard(b1, s1)
+	tracker.AddBoard(b2, s2)
+
+	func(board C4Board) {
+		s5 := tracker.GetSegments(b1)
+		s5[0][2] = 2
+		fmt.Printf("s5 = %v\n", s5)
+	}(b1)
+	s3 := tracker.GetSegments(b1)
+	s4 := tracker.GetSegments(b2)
+
+	fmt.Printf("s1 = %v, s2 = %v, s3 = %v, s4 = %v", s1, s2, s3, s4)
+}
 
 // Check if two slices of moves are equivalent
 func checkEquivalent(p1s, p2s []Move) bool {
@@ -58,6 +104,7 @@ func TestLegalMoves2(t *testing.T) {
 	}
 }
 
+/*
 func TestCheckHorizontal1(t *testing.T) {
 	b := C4Board{position: [7][6]Piece{
 		[6]Piece{2, 2, 1, 2, 2, 1},
@@ -111,7 +158,7 @@ func TestCheckDiagonal1(t *testing.T) {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
 }
-
+*/
 // Test if a non-full board is called a draw
 func TestDraw1(t *testing.T) {
 	b := C4Board{position: [7][6]Piece{
@@ -394,7 +441,7 @@ func TestConcurrentFindBestMove3(t *testing.T) {
 func TestCalculateScore1(t *testing.T) {
 	var s Segment = [4]Piece{Red, Black, Red, Red}
 	var expected float32 = 0.0
-	var actual float32 = CalculateScore(s, Red)
+	var actual float32 = s.CalculateScore(Red)
 	if actual != expected {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -403,7 +450,7 @@ func TestCalculateScore1(t *testing.T) {
 func TestCalculateScore2(t *testing.T) {
 	var s Segment = [4]Piece{Red, Empty, Red, Red}
 	var expected float32 = 50.0
-	var actual float32 = CalculateScore(s, Red)
+	var actual float32 = s.CalculateScore(Red)
 	if actual != expected {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -412,7 +459,7 @@ func TestCalculateScore2(t *testing.T) {
 func TestCalculateScore3(t *testing.T) {
 	var s Segment = [4]Piece{Red, Empty, Red, Red}
 	var expected float32 = -50.0
-	var actual float32 = CalculateScore(s, Black)
+	var actual float32 = s.CalculateScore(Black)
 	if actual != expected {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -421,7 +468,7 @@ func TestCalculateScore3(t *testing.T) {
 func TestCalculateScore4(t *testing.T) {
 	var s Segment = [4]Piece{Empty, Empty, Red, Red}
 	var expected float32 = -5.0
-	var actual float32 = CalculateScore(s, Black)
+	var actual float32 = s.CalculateScore(Black)
 	if actual != expected {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -430,7 +477,7 @@ func TestCalculateScore4(t *testing.T) {
 func TestCalculateScore5(t *testing.T) {
 	var s Segment = [4]Piece{Red, Empty, Empty, Red}
 	var expected float32 = -5.0
-	var actual float32 = CalculateScore(s, Black)
+	var actual float32 = s.CalculateScore(Black)
 	if actual != expected {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -439,7 +486,7 @@ func TestCalculateScore5(t *testing.T) {
 func TestCalculateScore6(t *testing.T) {
 	var s Segment = [4]Piece{Black, Red, Red, Red}
 	var expected float32 = 0.0
-	var actual float32 = CalculateScore(s, Black)
+	var actual float32 = s.CalculateScore(Black)
 	if actual != expected {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}
@@ -448,7 +495,7 @@ func TestCalculateScore6(t *testing.T) {
 func TestCalculateScore7(t *testing.T) {
 	var s Segment = [4]Piece{Red, Red, Red, Red}
 	var expected float32 = 5000.0
-	var actual float32 = CalculateScore(s, Red)
+	var actual float32 = s.CalculateScore(Red)
 	if actual != expected {
 		t.Errorf("Test failed: expected %v to be %v", actual, expected)
 	}

@@ -1,4 +1,3 @@
-
 /*
 	Author: Tony Calarese, Adam Decosta
 	Class: CSI-380
@@ -19,23 +18,11 @@ package main
 // segmentEquivalent checks if all of the pieces in the segment
 // are of the same kind and non empty. Returns true if all pieces
 // in the segment are of the same kind, false otherwise.
-func segmentEquivalent(segment Segment) bool {
-	// basePiece will be set to the first item in the slice,
-	// doesn't matter if the first item is empty, because if it is
-	// then all cannot be equivalent AND have a piece in it.
-	basePiece := segment[0]
-	for _, piece := range segment {
-		if piece != basePiece || piece == Empty {
-			return false
-		}
-	}
-
-	return true
-}
 
 // CheckVertical checks if there is a winning vertical segment
 // it will return immediately if a win is found. If a win is not found
 // it will return all the segments tested and a win status of "false".
+/*
 func (board C4Board) CheckVertical() (segments []Segment, win bool) {
 	win = false
 	var segment Segment
@@ -176,15 +163,15 @@ func CalculateScore(segment Segment, player Piece) float32 {
 	pieceCount := 0
 	pieceToCount := Empty
 	// Loops through all the pieces in the segment
-	for _, piece := range segment {
+	for _, currentPiece := range segment {
 		// We only want to choose a piece to count once
 		// we actually get to a piece that isn't empty
-		if piece != Empty && pieceToCount == Empty {
-			pieceToCount = piece
+		if currentPiece != Empty && pieceToCount == Empty {
+			pieceToCount = currentPiece
 			pieceCount++
-		} else if piece != pieceToCount && piece != Empty {
+		} else if currentPiece != pieceToCount && currentPiece != Empty {
 			return 0.0
-		} else if piece != Empty {
+		} else if currentPiece != Empty {
 			pieceCount++
 		}
 	}
@@ -210,3 +197,4 @@ func CalculateScore(segment Segment, player Piece) float32 {
 
 	return score()
 }
+*/

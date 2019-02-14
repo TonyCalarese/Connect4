@@ -60,9 +60,8 @@ func getDepth() uint {
 // Main game loop
 func main() {
 	//Set difficulty
-	//ar depth uint = getDepth() //Uncomment if you uncomment func getDepth	
-
-	for !gameBoard.IsDraw() && !gameBoard.IsWin() {
+	//ar depth uint = getDepth() //Uncomment if you uncomment func getDepth
+	for {
 		fmt.Printf("%s", gameBoard.String())
 
 		legal := false
@@ -81,25 +80,30 @@ func main() {
 		}
 		gameBoard = gameBoard.MakeMove(col) //Player Making Move
 
-		 if gameBoard.IsWin() {
-			 //Player has won 
-			 //Need to check the win after every Move
-			 fmt.Println("!!!!!!!!!Congradulations You Won!!!!!!!!!!!!!")
-			 break
-		 }
+		if gameBoard.IsWin() {
+			//Player has won
+			//Need to check the win after every Move
+			fmt.Println("!!!!!!!!!Congradulations You Won!!!!!!!!!!!!!")
+			break
+		} else if gameBoard.IsDraw() {
+			fmt.Println("Draw!")
+			break
+		}
 		time.Sleep(1000 * time.Millisecond)
 		//gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, depth)) //Non Concurrent
 		//gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, depth)) //Concurrent with inputted Depth
-		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 5)) //Concurrent without inputted Depth
-		
-		
+		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 3)) //Concurrent without inputted Depth
+
 		if gameBoard.IsWin() {
-			//Player has won 
+			//Player has won
 			//Need to check the win after every Move
 			fmt.Println("!!!!!!!!!The Computer Won!!!!!!!!!!!!")
 			break
+		} else if gameBoard.IsDraw() {
+			fmt.Println("Draw!")
+			break
 		}
-		
+
 	}
 	fmt.Printf("%s", gameBoard.String())
 }

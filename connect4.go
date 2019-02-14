@@ -21,12 +21,14 @@
 
 package main
 
+import "sync"
+
 // size of the board
 const numCols uint = 7
 const numRows uint = 6
 
 // Segment represents an array of moves of length segmentLength
-type Segment [segmentLength]Piece
+//type Segment [segmentLength]Piece
 
 // size of a winning segment in Connect 4
 const segmentLength uint = 4
@@ -40,6 +42,9 @@ type C4Board struct {
 	colCount [numCols]uint           // how many pieces are in a given column (or how many are "non-empty")
 	turn     Piece                   // who's turn it is to play
 }
+
+// tracker tracks the segments for board instances
+var tracker SegmentTracker = SegmentTracker{make(map[C4Board][]Segment), &sync.Mutex{}}
 
 // Turn returns who's turn it is.
 func (board C4Board) Turn() Piece {
@@ -60,8 +65,68 @@ func (board C4Board) MakeMove(col Move) Board {
 	b.colCount[col]++
 
 	b.turn = b.Turn().opposite()
+	b.LoadSegments()
 
 	return b
+}
+
+//LoadSegments loads all the segments into the board
+func (board C4Board) LoadSegments() {
+	segments := make([]Segment, 1)
+	// Loads Vertical Segments
+	var i, j uint
+	var segment Segment
+	for i = 0; i < numCols; i++ {
+		for j = 0; j < numRows-3; j++ {
+			segment = Segment{
+				board.position[i][j],
+				board.position[i][j+1],
+				board.position[i][j+2],
+				board.position[i][j+3],
+			}
+			segments = append(segments, segment)
+		}
+	}
+
+	// Loads Horizontal Segments
+	for i = 0; i < numRows; i++ {
+		for j = 0; j < numCols-3; j++ {
+			segment = Segment{
+				board.position[j][i],
+				board.position[j+1][i],
+				board.position[j+2][i],
+				board.position[j+3][i],
+			}
+			segments = append(segments, segment)
+		}
+	}
+
+	// Diagonal Segments
+	for i = 0; i < numCols-3; i++ {
+		for j = 0; j < numRows-3; j++ {
+			segment = Segment{
+				board.position[i][j],
+				board.position[i+1][j+1],
+				board.position[i+2][j+2],
+				board.position[i+3][j+3],
+			}
+			segments = append(segments, segment)
+		}
+	}
+
+	for i = numCols - 1; i > 2; i-- {
+		for j = 0; j < numRows-3; j++ {
+			segment = Segment{
+				board.position[i][j],
+				board.position[i-1][j+1],
+				board.position[i-2][j+2],
+				board.position[i-3][j+3],
+			}
+			segments = append(segments, segment)
+		}
+	}
+
+	tracker.AddBoard(board, segments)
 }
 
 // LegalMoves returns all of the current legal moves.
@@ -71,8 +136,7 @@ func (board C4Board) LegalMoves() []Move {
 	legalMoves := make([]Move, 0, 7)
 
 	// Appends a possible move if it isn't full
-	var i uint
-	for i = 0; i < numCols; i++ {
+	for i := uint(0); i < numCols; i++ {
 		if board.colCount[i] < numRows {
 			legalMoves = append(legalMoves, Move(i))
 		}
@@ -84,11 +148,18 @@ func (board C4Board) LegalMoves() []Move {
 // IsWin calculates if the board is in a winning position
 // if it is, then returns true, else returns false.
 func (board C4Board) IsWin() bool {
-
-	// Checks if there is a win in any direction
-	if board.HorizontalWin() || board.VerticalWin() || board.DiagonalWin() {
-		return true
+	segments := tracker.GetSegments(board)
+	if segments == nil {
+		board.LoadSegments()
+		segments = tracker.GetSegments(board)
 	}
+
+	for _, segment := range segments {
+		if segment.Equivalent() {
+			return true
+		}
+	}
+
 	return false
 }
 
@@ -120,39 +191,19 @@ func (board C4Board) IsDraw() bool {
 // You may also need to score wins (4 filleds) as very high scores and losses (4 filleds
 // for the opponent) as very low scores
 func (board C4Board) Evaluate(player Piece) float32 {
+	segments := tracker.GetSegments(board)
+	if segments == nil {
+		board.LoadSegments()
+		segments = tracker.GetSegments(board)
+	}
 	var totalScore float32
 
-	// These will load all of the segments for each direction into these three variables
-	horizontalSegments, _ := board.CheckHorizontal()
-	/*
-	fmt.Println("Horizontal")
-	for _, segment := range horizontalSegments{
-		fmt.Println(segment, " ", CalculateScore(segment, board.Turn()))
+	for _, segment := range segments {
+		totalScore += segment.CalculateScore(player)
 	}
-	*/
-	verticalSegments, _ := board.CheckVertical()
-	/*
-	fmt.Println("Verticle")
-	for _, segment := range verticalSegments{
-		fmt.Println(segment, " ", CalculateScore(segment, board.Turn()))
-	}
-	*/
-	diagonalSegments, _ := board.CheckDiagonal()
-	/*
-	fmt.Println("Diagonal")
-	for _, segment := range diagonalSegments{
-		fmt.Println(segment, " ", CalculateScore(segment, board.Turn()))
-	}
-	*/
-	// Gets the score for all the segments in that direction
-	totalScore += CalculateDirection(horizontalSegments, player)
-	
-	totalScore += CalculateDirection(verticalSegments, player)
-	
-	totalScore += CalculateDirection(diagonalSegments, player)
-	
 
 	return totalScore
+
 }
 
 // Nice to print board representation
