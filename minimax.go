@@ -22,7 +22,7 @@ package main
 
 import (
 	"math"
-	"fmt"
+	//"fmt"
 )
 
 // Find the best possible outcome evaluation for originalPlayer
@@ -76,7 +76,7 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 		go func(move Move) {
 			var e Eval
 			e.m = move
-			e.f = MiniMax(board.MakeMove(move), true, board.Turn(), depth)
+			e.f = MiniMax(board.MakeMove(move), false, board.Turn(), depth)
 			scores <- e
 		}(move)
 	}
@@ -100,10 +100,10 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 func FindBestMove(board Board, depth uint) Move {
 	var bestMove Move
 	var bestScore float32 = -math.MaxFloat32
-	fmt.Println(board)
+	
 	for _, move := range board.LegalMoves() {
 		// Should we pass board.Turn() or pass the next turn into this function?
-		if score := MiniMax(board.MakeMove(move), true, board.Turn(), depth); score > bestScore {
+		if score := MiniMax(board.MakeMove(move), false, board.Turn(), depth); score > bestScore {
 			bestMove = move
 			bestScore = score
 		}
