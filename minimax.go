@@ -22,10 +22,10 @@ package main
 
 import (
 	"math"
-	//"fmt"
+	"fmt"
 )
 
-// MiniMax finds the best possible outcome evaluation for originalPlayer
+// Find the best possible outcome evaluation for originalPlayer
 // depth is initially the maximum depth
 func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) float32 {
 	// Base case — terminal position or maximum depth reached
@@ -54,7 +54,6 @@ func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) flo
 		return worstEval
 	}
 }
-
 // Eval represents a move evaluation
 type Eval struct {
 	m Move
@@ -101,7 +100,7 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 func FindBestMove(board Board, depth uint) Move {
 	var bestMove Move
 	var bestScore float32 = -math.MaxFloat32
-
+	fmt.Println(board)
 	for _, move := range board.LegalMoves() {
 		// Should we pass board.Turn() or pass the next turn into this function?
 		if score := MiniMax(board.MakeMove(move), true, board.Turn(), depth); score > bestScore {

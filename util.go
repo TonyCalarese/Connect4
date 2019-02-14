@@ -1,3 +1,19 @@
+
+/*
+	Author: Tony Calarese, Adam Decosta
+	Class: CSI-380
+	Assignment: Assignment 3
+	Due Date: February 14, 2019 11:59 PM
+	Certification of Authenticity:
+	We certify that this is entirely our own work, except where we have given
+	fully-documented references to the work of others. We understand the definition
+	and consequences of plagiarism and acknowledge that the assessor of this
+	assignment may, for the purpose of assessing this assignment:
+	- Reproduce this assignment and provide a copy to another member of academic
+	- staff; and/or Communicate a copy of this assignment to a plagiarism checking
+	- service (which may then retain a copy of this assignment on its database for
+	- the purpose of future plagiarism checking)
+*/
 package main
 
 // segmentEquivalent checks if all of the pieces in the segment
@@ -155,6 +171,7 @@ func CalculateDirection(segments []Segment, player Piece) (score float32) {
 	return
 }
 
+//Need to rewrite
 func CalculateScore(segment Segment, player Piece) float32 {
 	pieceCount := 0
 	pieceToCount := Empty
@@ -186,8 +203,8 @@ func CalculateScore(segment Segment, player Piece) float32 {
 			return 5000.0
 		}
 	}
-
 	if pieceToCount != player && pieceToCount != Empty {
+
 		return -score()
 	}
 

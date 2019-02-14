@@ -21,6 +21,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 var gameBoard Board = C4Board{turn: Black}
@@ -31,16 +32,18 @@ var gameBoard Board = C4Board{turn: Black}
 func getPlayerMove() Move {
 	var col Move
 
-	fmt.Println("Enter a Column you would like to insert in(1-7): ")
+	fmt.Println("Enter a Column you would like to insert in(0-6): ")
 	for {
-		if _, err := fmt.Scanln(&col); err == nil && (col <= 7 || col >= 1) {
+		if _, err := fmt.Scanln(&col); err == nil && (col <= 6 || col >= 0) {
 			break
 		}
 	}
-	col--
 	return col
 }
 
+//Only uncomment if you want the depth to be User prefered
+//Comment lines: 93 Uncomment Lines 63, 92
+/*
 func getDepth() uint {
 	var depth uint
 
@@ -53,15 +56,12 @@ func getDepth() uint {
 	}
 	return depth
 }
+*/
 // Main game loop
 func main() {
-	//var c chan Move = make(chan Move)
-
-
 	//Set difficulty
-	var depth uint = getDepth()
+	//ar depth uint = getDepth() //Uncomment if you uncomment func getDepth	
 
-	
 	for !gameBoard.IsDraw() && !gameBoard.IsWin() {
 		fmt.Printf("%s", gameBoard.String())
 
@@ -79,8 +79,7 @@ func main() {
 				col = getPlayerMove()
 			}
 		}
-		gameBoard = gameBoard.MakeMove(col)
-		//gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, 3))
+		gameBoard = gameBoard.MakeMove(col) //Player Making Move
 
 		 if gameBoard.IsWin() {
 			 //Player has won 
@@ -88,19 +87,19 @@ func main() {
 			 fmt.Println("!!!!!!!!!Congradulations You Won!!!!!!!!!!!!!")
 			 break
 		 }
-		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, depth))
-
+		time.Sleep(1000 * time.Millisecond)
+		//gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, depth)) //Non Concurrent
+		//gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, depth)) //Concurrent with inputted Depth
+		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 5)) //Concurrent without inputted Depth
+		
+		
 		if gameBoard.IsWin() {
 			//Player has won 
 			//Need to check the win after every Move
 			fmt.Println("!!!!!!!!!The Computer Won!!!!!!!!!!!!")
 			break
 		}
-		/*
-		fmt.Printf("Black: %f", gameBoard.Evaluate(Black))
-		fmt.Printf("Red: %f", gameBoard.Evaluate(Red))
-		fmt.Println()
-		*/
+		
 	}
 	fmt.Printf("%s", gameBoard.String())
 }
