@@ -124,33 +124,13 @@ func (board C4Board) Evaluate(player Piece) float32 {
 
 	// These will load all of the segments for each direction into these three variables
 	horizontalSegments, _ := board.CheckHorizontal()
-	/*
-	fmt.Println("Horizontal")
-	for _, segment := range horizontalSegments{
-		fmt.Println(segment, " ", CalculateScore(segment, board.Turn()))
-	}
-	*/
 	verticalSegments, _ := board.CheckVertical()
-	/*
-	fmt.Println("Verticle")
-	for _, segment := range verticalSegments{
-		fmt.Println(segment, " ", CalculateScore(segment, board.Turn()))
-	}
-	*/
 	diagonalSegments, _ := board.CheckDiagonal()
-	/*
-	fmt.Println("Diagonal")
-	for _, segment := range diagonalSegments{
-		fmt.Println(segment, " ", CalculateScore(segment, board.Turn()))
-	}
-	*/
+
 	// Gets the score for all the segments in that direction
 	totalScore += CalculateDirection(horizontalSegments, player)
-	
 	totalScore += CalculateDirection(verticalSegments, player)
-	
 	totalScore += CalculateDirection(diagonalSegments, player)
-	
 
 	return totalScore
 }

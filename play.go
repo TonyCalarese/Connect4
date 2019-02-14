@@ -21,7 +21,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 var gameBoard Board = C4Board{turn: Black}
@@ -41,27 +40,8 @@ func getPlayerMove() Move {
 	return col
 }
 
-//Only uncomment if you want the depth to be User prefered
-//Comment lines: 93 Uncomment Lines 63, 92
-/*
-func getDepth() uint {
-	var depth uint
-
-	fmt.Println("Enter a difficulty (1-5): ")
-	for {
-		if _, err := fmt.Scanln(&depth);
-		 err == nil && (depth <= 5 || depth >= 1) {
-			break
-		}
-	}
-	return depth
-}
-*/
 // Main game loop
 func main() {
-	//Set difficulty
-	//ar depth uint = getDepth() //Uncomment if you uncomment func getDepth	
-
 	for !gameBoard.IsDraw() && !gameBoard.IsWin() {
 		fmt.Printf("%s", gameBoard.String())
 
@@ -81,25 +61,22 @@ func main() {
 		}
 		gameBoard = gameBoard.MakeMove(col) //Player Making Move
 
-		 if gameBoard.IsWin() {
-			 //Player has won 
-			 //Need to check the win after every Move
-			 fmt.Println("!!!!!!!!!Congradulations You Won!!!!!!!!!!!!!")
-			 break
-		 }
-		time.Sleep(1000 * time.Millisecond)
-		//gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, depth)) //Non Concurrent
-		//gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, depth)) //Concurrent with inputted Depth
-		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 5)) //Concurrent without inputted Depth
-		
-		
 		if gameBoard.IsWin() {
-			//Player has won 
+			//Player has won
+			//Need to check the win after every Move
+			fmt.Println("!!!!!!!!!Congradulations You Won!!!!!!!!!!!!!")
+			break
+		}
+
+		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 3)) //Concurrent without inputted Depth
+
+		if gameBoard.IsWin() {
+			//Player has won
 			//Need to check the win after every Move
 			fmt.Println("!!!!!!!!!The Computer Won!!!!!!!!!!!!")
 			break
 		}
-		
+
 	}
 	fmt.Printf("%s", gameBoard.String())
 }

@@ -54,6 +54,7 @@ func MiniMax(board Board, maximizing bool, originalPlayer Piece, depth uint) flo
 		return worstEval
 	}
 }
+
 // Eval represents a move evaluation
 type Eval struct {
 	m Move
@@ -70,7 +71,6 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 	legalMoves := board.LegalMoves()
 
 	scores := make(chan Eval, len(legalMoves))
-	//evals := make([]eval, len(legalMoves))
 
 	for _, move := range legalMoves {
 		go func(move Move) {
@@ -100,9 +100,8 @@ func ConcurrentFindBestMove(board Board, depth uint) Move {
 func FindBestMove(board Board, depth uint) Move {
 	var bestMove Move
 	var bestScore float32 = -math.MaxFloat32
-	
+
 	for _, move := range board.LegalMoves() {
-		// Should we pass board.Turn() or pass the next turn into this function?
 		if score := MiniMax(board.MakeMove(move), false, board.Turn(), depth); score > bestScore {
 			bestMove = move
 			bestScore = score
