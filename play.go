@@ -92,6 +92,7 @@ func main() {
 		time.Sleep(1000 * time.Millisecond)
 		//gameBoard = gameBoard.MakeMove(FindBestMove(gameBoard, depth)) //Non Concurrent
 		//gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, depth)) //Concurrent with inputted Depth
+
 		gameBoard = gameBoard.MakeMove(ConcurrentFindBestMove(gameBoard, 3)) //Concurrent without inputted Depth
 
 		if gameBoard.IsWin() {
